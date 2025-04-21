@@ -21,6 +21,13 @@ var kDarkColorScheme = ColorScheme.fromSeed(
 class Quiz extends StatefulWidget {
   const Quiz({super.key});
 
+
+  @override
+  StatefulElement createElement() {
+    print('hug_app createElement');
+    return super.createElement();
+  }
+
   @override
   State<StatefulWidget> createState() {
     return _QuizState();
@@ -71,7 +78,11 @@ class _QuizState extends State<Quiz> {
 
   @override
   Widget build(BuildContext context) {
-    Widget screenWidget = StartScreen(switchScreen);
+    print('hug_app build Widget');
+    Widget? screenWidget;
+    if (activeScreen == 'start_screen') {
+      screenWidget = StartScreen(switchScreen);
+    }
     if (activeScreen == 'question-screen') {
       screenWidget = QuestionScreen(onSelectAnswer: chooseAnswer);
     }
@@ -125,27 +136,27 @@ class _QuizState extends State<Quiz> {
       ),
       themeMode: ThemeMode.system,
 
-      // home: Scaffold(
-      //   // backgroundColor: Color.fromARGB(255, 138, 138, 144),
-      //   // appBar:
-      //   //     (screenWidget is Expenses)
-      //   //         ? AppBar(
-      //   //       title: Text('Money Tracker'),
-      //   //       // backgroundColor: Colors.deepPurple,
-      //   //           actions: [
-      //   //             IconButton(onPressed: (){}, icon: Icon(Icons.add)),
-      //   //           ],
-      //   //         )
-      //   //         : null,
-      //   body: GradientContainer(
-      //     screenWidget,
-      //     colors: [
-      //       Color.fromARGB(255, 138, 138, 144),
-      //       Color.fromARGB(255, 65, 65, 74),
-      //     ],
-      //   ),
-      // )
-      home: Expenses(),
+      home: Scaffold(
+        // backgroundColor: Color.fromARGB(255, 138, 138, 144),
+        // appBar:
+        //     (screenWidget is Expenses)
+        //         ? AppBar(
+        //       title: Text('Money Tracker'),
+        //       // backgroundColor: Colors.deepPurple,
+        //           actions: [
+        //             IconButton(onPressed: (){}, icon: Icon(Icons.add)),
+        //           ],
+        //         )
+        //         : null,
+        body: GradientContainer(
+          screenWidget,
+          colors: [
+            Color.fromARGB(255, 138, 138, 144),
+            Color.fromARGB(255, 65, 65, 74),
+          ],
+        ),
+      )
+      // home: Expenses(),
     );
   }
 }
