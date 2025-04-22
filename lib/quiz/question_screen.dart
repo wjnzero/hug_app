@@ -9,7 +9,7 @@ class QuestionScreen extends StatefulWidget {
   final void Function(String answer) onSelectAnswer;
 
   @override
-  State<StatefulWidget> createState() {
+  State<QuestionScreen> createState() {
     return _QuestionScreenState();
   }
 }

@@ -11,7 +11,7 @@ class NewExpense extends StatefulWidget {
   final void Function(Expense expensive) onAddExpense;
 
   @override
-  State<StatefulWidget> createState() {
+  State<NewExpense> createState() {
     return _NewExpense();
   }
 }

@@ -29,7 +29,7 @@ class Quiz extends StatefulWidget {
   }
 
   @override
-  State<StatefulWidget> createState() {
+  State<Quiz> createState() {
     return _QuizState();
   }
 }
