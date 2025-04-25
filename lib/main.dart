@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hug_app/meal/data/dummy_data.dart';
-import 'package:hug_app/meal/screens/meal_categories.dart';
 import 'package:hug_app/meal/screens/meal_tab.dart';
-import 'package:hug_app/meal/screens/meals_screen.dart';
-// import 'package:flutter/services.dart';
-import 'package:hug_app/quiz/quiz.dart';
 
 // import 'dice/gradient_container.dart';
-
 
 final mealsTheme = ThemeData(
   useMaterial3: true,
@@ -31,19 +26,19 @@ void main() {
 
   // runApp(const Quiz());
 
-  runApp(const MealsApp());
+  runApp(ProviderScope(child: const MealsApp()));
 }
 
 class MealsApp extends StatelessWidget {
   const MealsApp({super.key});
 
-  @override
+   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: mealsTheme,
-        // home: MealCategories()
-        home: MealTab()
-        // home: MealsScreen(title: 'title', meals: dummyMeals)
+      theme: mealsTheme,
+      // home: MealCategories()
+      home: MealTab(),
+      // home: MealsScreen(title: 'title', meals: dummyMeals)
     );
   }
 }
