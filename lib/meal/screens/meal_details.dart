@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hug_app/meal/models/meal.dart';
 import 'package:hug_app/meal/providers/favourite_provider.dart';
-import 'package:hug_app/meal/providers/filters_provider.dart';
 
 class MealDetails extends ConsumerWidget {
   final Meal meal;
@@ -41,8 +40,18 @@ class MealDetails extends ConsumerWidget {
                 ),
               );
             },
-            icon: Icon(
-              isFavouriteFlag ? Icons.favorite : Icons.favorite_border
+            icon: AnimatedSwitcher(
+              duration: Duration(milliseconds: 400),
+              transitionBuilder: (child, animation) {
+                return RotationTransition(
+                  turns: Tween<double>(begin: 0.4, end: 1).animate(animation),
+                  child: child,
+                );
+              },
+              child: Icon(
+                isFavouriteFlag ? Icons.favorite : Icons.favorite_border,
+                key: ValueKey(isFavouriteFlag),
+              ),
             ),
           ),
         ],
@@ -50,11 +59,14 @@ class MealDetails extends ConsumerWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Image.network(
-              meal.imageUrl,
-              width: double.infinity,
-              height: 300,
-              fit: BoxFit.cover,
+            Hero(
+              tag: meal.id,
+              child: Image.network(
+                meal.imageUrl,
+                width: double.infinity,
+                height: 300,
+                fit: BoxFit.cover,
+              ),
             ),
             const SizedBox(height: 14),
             Text(
