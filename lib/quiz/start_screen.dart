@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hug_app/main.dart';
 
 class StartScreen extends StatelessWidget {
   const StartScreen(this.startQuiz, {super.key});
@@ -28,18 +29,33 @@ class StartScreen extends StatelessWidget {
           ),
         ),
         Text(
-            'Howl666',
-            style: GoogleFonts.lato(fontSize: isLandscape ? 16 : 22, color: Colors.white),
+          'Howl666',
+          style: GoogleFonts.lato(
+            fontSize: isLandscape ? 16 : 22,
+            color: Colors.white,
           ),
+        ),
         SizedBox(height: isLandscape ? 5 : 50),
         Padding(
-          padding: const EdgeInsets.fromLTRB(0,0,0,20),
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
           child: OutlinedButton.icon(
-              onPressed: startQuiz,
-              style: OutlinedButton.styleFrom(foregroundColor: Colors.white),
-              label: Text('Connect!'),
-              icon: Icon(Icons.arrow_forward_outlined),
-            ),
+            onPressed: startQuiz,
+            style: OutlinedButton.styleFrom(foregroundColor: Colors.white),
+            label: Text('Connect!'),
+            icon: Icon(Icons.arrow_forward_outlined),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+          child: OutlinedButton.icon(
+            onPressed:
+                () => Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => MealsApp()),
+                ),
+            style: OutlinedButton.styleFrom(foregroundColor: Colors.white),
+            label: Text('MealApp!'),
+            icon: Icon(Icons.arrow_forward_outlined),
+          ),
         ),
       ],
     );
