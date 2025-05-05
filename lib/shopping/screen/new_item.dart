@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:hug_app/shopping/data/categories.dart';
 import 'package:hug_app/shopping/models/category.dart';
 import 'package:hug_app/shopping/models/grocery_Item.dart';
@@ -15,6 +18,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
   var _enterName = '';
   var _enterQuantity = 1;
   var _selectCategory = categories[Categories.other];
+  var _isSending = false;
 
   @override
   Widget build(BuildContext context) {
@@ -97,16 +101,29 @@ class _NewItemScreenState extends State<NewItemScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    onPressed: () {
-                      _formKey.currentState!.reset();
-                    },
+                    onPressed:
+                        _isSending
+                            ? null
+                            : () {
+                              _formKey.currentState!.reset();
+                            },
                     child: const Text('Clear'),
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                      _saveItem();
-                    },
-                    child: const Text('Add Item'),
+                    onPressed:
+                        _isSending
+                            ? null
+                            : () {
+                              _saveItem();
+                            },
+                    child:
+                        _isSending
+                            ? const SizedBox(
+                              height: 16,
+                              width: 16,
+                              child: CircularProgressIndicator(),
+                            )
+                            : const Text('Add Item'),
                   ),
                 ],
               ),
@@ -117,12 +134,37 @@ class _NewItemScreenState extends State<NewItemScreen> {
     );
   }
 
-  void _saveItem() {
+  void _saveItem() async {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isSending = true;
+      });
       _formKey.currentState!.save();
+      final url = Uri.https(
+        'hug-app-cbce6-default-rtdb.asia-southeast1.firebasedatabase.app',
+        'shopping-list.json',
+      );
+      final res = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'name': _enterName,
+          'quantity': _enterQuantity,
+          'category': _selectCategory!.title,
+        }),
+      );
+
+      // res.statusCode == 200
+      if (!context.mounted) {
+        return;
+      }
+      final Map<String, dynamic> resData = json.decode(res.body);
+
+      // Navigator.of(context).pop();
+
       Navigator.of(context).pop(
         GroceryItem(
-          id: DateTime.now().toString(),
+          id: resData['name'],
           name: _enterName,
           quantity: _enterQuantity,
           category: _selectCategory!,
